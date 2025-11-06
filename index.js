@@ -15,7 +15,11 @@ const PORT = process.env.PORT || 5000;
 // 🔹 Middleware
 app.use(
   cors({
-    origin: ["http://localhost:8080", "http://localhost:5000"],
+    origin: [
+      "http://localhost:8080",
+      "http://localhost:5000",
+      "https://lock-doc.vercel.app",
+    ],
     methods: "GET,POST,PATCH,PUT,DELETE",
     credentials: true,
   })
