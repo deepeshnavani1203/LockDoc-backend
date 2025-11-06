@@ -10,8 +10,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.922.0",
-    "@aws-sdk/lib-dynamodb": "^3.922.0",
+    "@aws-sdk/client-dynamodb": "^3.925.0",
+    "@aws-sdk/client-s3": "^3.925.0",
+    "@aws-sdk/lib-dynamodb": "^3.925.0",
+    "@aws-sdk/s3-request-presigner": "^3.925.0",
     "@supabase/supabase-js": "^2.75.0",
     "aws-sdk": "^2.1692.0",
     "cloudinary": "^2.8.0",
