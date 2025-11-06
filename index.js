@@ -35,6 +35,7 @@ try {
     credentials: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      sessionToken: process.env.AWS_SESSION_TOKEN,
     },
   });
 
@@ -53,7 +54,7 @@ try {
 // 🔹 Check all connections
 if (supabase && dynamoConnected) {
   console.log(
-    "✅ All connections established successfully (Supabase, DynamoDB)"
+    "✅ All connections established successfully (Supabase, DynamoDB, S3)"
   );
 } else {
   console.log("⚠️ One or more connections failed to initialize");

@@ -21,27 +21,26 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// Configure AWS SDK for S3
+// ✅ CLEANED S3 CONFIG (no duplicates)
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  sessionToken: process.env.AWS_SESSION_TOKEN, // 🟢 Add this line
-  region: process.env.AWS_REGION,
-
+  sessionToken: process.env.AWS_SESSION_TOKEN, // ✅ Needed for VocLabs temporary credentials
   region: process.env.AWS_REGION,
 });
+
 const s3 = new AWS.S3();
 
-// Configure DynamoDB
+// ✅ FIXED DYNAMODB — now includes sessionToken
 const dynamoClient = new DynamoDBClient({
   region: process.env.AWS_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    sessionToken: process.env.AWS_SESSION_TOKEN, // ✅ CRITICAL FIX
   },
 });
+
 const dynamo = DynamoDBDocumentClient.from(dynamoClient);
 
 // Function to generate random text ID (e.g., DOC-8f3ab2x7)
@@ -74,6 +73,7 @@ const uploadDocument = async (req, res) => {
       Body: fileContent,
       ContentType: mimetype,
     };
+
     const s3Upload = await s3.upload(s3Params).promise();
 
     // 🟩 Generate random doc_id
@@ -89,7 +89,7 @@ const uploadDocument = async (req, res) => {
         doc_id: docId,
         doc_name: originalname,
         doc_type: mimetype,
-        doc_link: cloudLink, // you can also store s3Link if you want
+        doc_link: cloudLink,
       },
     ]);
 
@@ -97,9 +97,10 @@ const uploadDocument = async (req, res) => {
       console.error("Supabase error:", error);
     }
 
-    // 🟩 Store metadata in DynamoDB
+    // ✅ Store metadata in DynamoDB
     const item = {
-      id: docId,
+      "c-id": docId, // ✅ Partition Key
+      id: docId, // ✅ Sort Key
       name: originalname,
       type: mimetype,
       size: file.size,
