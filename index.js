@@ -20,6 +20,7 @@ app.use(
       "http://localhost:5000",
       // "https://lock-doc.vercel.app",
       "https://main.d2j1xepn83mufw.amplifyapp.com",
+      "https://lockdoc-backend.onrender.com",
     ],
     methods: "GET,POST,PATCH,PUT,DELETE",
     credentials: true,
